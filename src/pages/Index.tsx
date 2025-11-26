@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import Icon from '@/components/ui/icon';
 import { toast } from '@/components/ui/use-toast';
 
@@ -13,11 +14,46 @@ const Index = () => {
   const [phone, setPhone] = useState('');
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedTitle, setSelectedTitle] = useState<string>('');
 
   const pricePerSqM = 450;
   const totalPrice = area * pricePerSqM;
   const discount = 15;
   const finalPrice = totalPrice * (1 - discount / 100);
+
+  const portfolioImages = [
+    { 
+      img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/08104111-45dd-483d-af53-5f3a20fc9756.jpg',
+      title: 'Гостиная с магнитными треками',
+      area: 32
+    },
+    { 
+      img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/f5911159-0551-4910-994d-a06dcf6c3ae7.jpg',
+      title: 'Спальня премиум-класса',
+      area: 25
+    },
+    { 
+      img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/8dba3c56-1f9d-4d85-8e65-8c4f1abc89bf.jpg',
+      title: 'Кухня с теневым потолком',
+      area: 28
+    },
+    { 
+      img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/87061401-124c-4962-ad92-c0ffd1fbcc5b.jpg',
+      title: 'Офисное пространство',
+      area: 45
+    },
+    { 
+      img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/ec0e53e1-4c88-4c73-9ce9-c4acc127b6c5.jpg',
+      title: 'Современная гостиная',
+      area: 38
+    },
+    { 
+      img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/808aaea2-320e-4e98-8cfa-75ca48470964.jpg',
+      title: 'Столовая зона',
+      area: 30
+    }
+  ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -255,39 +291,15 @@ const Index = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              { 
-                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/08104111-45dd-483d-af53-5f3a20fc9756.jpg',
-                title: 'Гостиная с магнитными треками',
-                area: 32
-              },
-              { 
-                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/f5911159-0551-4910-994d-a06dcf6c3ae7.jpg',
-                title: 'Спальня премиум-класса',
-                area: 25
-              },
-              { 
-                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/8dba3c56-1f9d-4d85-8e65-8c4f1abc89bf.jpg',
-                title: 'Кухня с теневым потолком',
-                area: 28
-              },
-              { 
-                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/87061401-124c-4962-ad92-c0ffd1fbcc5b.jpg',
-                title: 'Офисное пространство',
-                area: 45
-              },
-              { 
-                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/ec0e53e1-4c88-4c73-9ce9-c4acc127b6c5.jpg',
-                title: 'Современная гостиная',
-                area: 38
-              },
-              { 
-                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/808aaea2-320e-4e98-8cfa-75ca48470964.jpg',
-                title: 'Столовая зона',
-                area: 30
-              }
-            ].map((item, index) => (
-              <Card key={index} className="overflow-hidden group cursor-pointer">
+            {portfolioImages.map((item, index) => (
+              <Card 
+                key={index} 
+                className="overflow-hidden group cursor-pointer"
+                onClick={() => {
+                  setSelectedImage(item.img);
+                  setSelectedTitle(item.title);
+                }}
+              >
                 <div className="relative h-64 overflow-hidden">
                   <img 
                     src={item.img} 
@@ -422,6 +434,33 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Image Modal */}
+      <Dialog open={selectedImage !== null} onOpenChange={() => setSelectedImage(null)}>
+        <DialogContent className="max-w-5xl p-0 bg-black/95 border-none">
+          <DialogTitle className="sr-only">{selectedTitle}</DialogTitle>
+          <div className="relative">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-4 right-4 z-10 text-white hover:bg-white/20"
+              onClick={() => setSelectedImage(null)}
+            >
+              <Icon name="X" size={24} />
+            </Button>
+            {selectedImage && (
+              <img 
+                src={selectedImage} 
+                alt={selectedTitle}
+                className="w-full h-auto max-h-[90vh] object-contain"
+              />
+            )}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+              <h3 className="text-white text-2xl font-bold">{selectedTitle}</h3>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Footer */}
       <footer className="bg-primary text-white py-12 px-4">
