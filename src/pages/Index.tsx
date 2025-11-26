@@ -255,17 +255,52 @@ const Index = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <Card key={item} className="overflow-hidden group cursor-pointer">
-                <div className="relative h-64 bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-                  <Icon name="Image" size={64} className="text-muted-foreground/30" />
+            {[
+              { 
+                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/08104111-45dd-483d-af53-5f3a20fc9756.jpg',
+                title: 'Гостиная с магнитными треками',
+                area: 32
+              },
+              { 
+                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/f5911159-0551-4910-994d-a06dcf6c3ae7.jpg',
+                title: 'Спальня премиум-класса',
+                area: 25
+              },
+              { 
+                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/8dba3c56-1f9d-4d85-8e65-8c4f1abc89bf.jpg',
+                title: 'Кухня с теневым потолком',
+                area: 28
+              },
+              { 
+                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/87061401-124c-4962-ad92-c0ffd1fbcc5b.jpg',
+                title: 'Офисное пространство',
+                area: 45
+              },
+              { 
+                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/ec0e53e1-4c88-4c73-9ce9-c4acc127b6c5.jpg',
+                title: 'Современная гостиная',
+                area: 38
+              },
+              { 
+                img: 'https://cdn.poehali.dev/projects/c091c39b-83fa-4a37-8d71-85120a05f22c/files/808aaea2-320e-4e98-8cfa-75ca48470964.jpg',
+                title: 'Столовая зона',
+                area: 30
+              }
+            ].map((item, index) => (
+              <Card key={index} className="overflow-hidden group cursor-pointer">
+                <div className="relative h-64 overflow-hidden">
+                  <img 
+                    src={item.img} 
+                    alt={item.title}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all duration-300 flex items-center justify-center">
                     <Icon name="Eye" className="text-white opacity-0 group-hover:opacity-100 transition-opacity" size={32} />
                   </div>
                 </div>
                 <CardContent className="p-4">
-                  <h3 className="font-semibold mb-1">Проект #{item}</h3>
-                  <p className="text-sm text-muted-foreground">Натяжной потолок, {15 + item * 5} м²</p>
+                  <h3 className="font-semibold mb-1">{item.title}</h3>
+                  <p className="text-sm text-muted-foreground">Натяжной потолок с магнитными треками, {item.area} м²</p>
                 </CardContent>
               </Card>
             ))}
